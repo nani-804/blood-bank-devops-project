@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/nani-804/blood-bank-devops-project'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t bloodbank-app -f docker/Dockerfile-app .'
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                sh 'docker run -itd --name bloodbank-container -p 8089:80 bloodbank-app'
+            }
+        }
+
+    }
+}
